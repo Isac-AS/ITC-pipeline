@@ -3,3 +3,7 @@ __pycache__/
 logs/
 pipeline_output/
 .vscode
+dev_testing_area/
+dist/
+build/
+setup_build.egg-info

@@ -1,24 +1,33 @@
-from file_checker import check_files
-from record_audio import record_sample
-from speech_to_text import transcribe
-import logging
+from context import Context
+from tools.text_file_handler import TextFileHandler
 
-def record_audio():
-    duration = input("Numero de segundos: ")
-    return record_sample(int(duration), current_output_dir)
+class Pipeline:
 
-if __name__ == "__main__":
-    current_output_dir = check_files()
+    context = None
 
-    if current_output_dir is None:
-        logging.error("Exiting program due to file checking error.")
-        exit(1)
-
-    if input("¿Realizar grabación? (y/n): ") == "y":
-        if not record_audio():
-            exit(1)
+    def __init__(self):
+        self.context = Context()
     
-        transcription = transcribe(current_output_dir)
-        print(f"\nTranscription:\n{transcription}")
+    def run_pipeline(self, output_path: str, verbose: bool, write_all_steps: bool):
+        transcription: str = self.context.execute_speech_to_text_strategy(output_path)
+        spell_checked_transcription: str = self.context.execute_spell_check_strategy(transcription)
+        dependency_parsing = self.context.execute_dependency_parsing_strategy(spell_checked_transcription)
+        named_entity_recognition = self.context.execute_named_entity_recognition_strategy(spell_checked_transcription)
+        ehr_output = self.context.execute_electronic_health_record_builder_strategy(dependency_parsing, named_entity_recognition)
 
-    
+        if verbose:
+            print(f"\nTranscription:\n{transcription}")
+            print(f"\nSpell_checked_transcription:\n{spell_checked_transcription}")
+            print(f"\nDependency parsing:\n{[(t.text, t.dep_, t.head.text) for t in dependency_parsing]}\n")
+            print(f"\nNamed-entity recognition:\n{named_entity_recognition['str']}")
+            print(f"\nElectronic Health Record:\n{ehr_output}")
+        
+        if write_all_steps:
+            dp_output = f"\nDependency parsing:\n{[(t.text, t.dep_, t.head.text) for t in dependency_parsing]}\n"
+            TextFileHandler.write_to_text_file(output_path, "dependency_parsing", dp_output)
+            TextFileHandler.write_to_text_file(output_path, "named_entity_recognition", named_entity_recognition["str"])
+
+        TextFileHandler.write_to_text_file(output_path, "transcription", spell_checked_transcription)
+        TextFileHandler.write_to_text_file(output_path, "spell_checked_transcription", spell_checked_transcription)
+        TextFileHandler.write_to_text_file(output_path, "electronic_health_record", ehr_output)
+        
