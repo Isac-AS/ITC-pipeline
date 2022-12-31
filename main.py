@@ -32,5 +32,5 @@ if __name__ == "__main__":
     if input("¿Guardar resultados? (y/n): ") == "y":
         write_pipeline_outputs = True
     pipeline = Pipeline()
-    pipeline.run_pipeline(output_path=current_output_dir,verbose=show_pipeline_outputs, write_all_steps=write_pipeline_outputs)
+    pipeline.run_3_step_pipeline(output_path=current_output_dir, verbose=show_pipeline_outputs)
     

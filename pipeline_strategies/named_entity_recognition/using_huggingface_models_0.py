@@ -2,8 +2,6 @@ from transformers import pipeline
 from pipeline_strategies.strategy import Strategy
 
 class ClinicalAndGenericNER(Strategy):
-    name = "Clinical and generic NER using models from huggingface"
-    id = 0
 
     @classmethod
     def execute(cls, text: str) -> dict:

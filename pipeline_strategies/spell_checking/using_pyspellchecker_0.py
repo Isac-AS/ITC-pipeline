@@ -2,8 +2,6 @@ from pipeline_strategies.strategy import Strategy
 from spellchecker import SpellChecker
 
 class UsingPySpellChecker(Strategy):
-    name = "PySpellchecker"
-    id = 0
     
     @classmethod
     def execute(cls, text: str) -> str:

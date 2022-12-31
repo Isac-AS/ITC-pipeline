@@ -52,5 +52,5 @@ class StrategyNavigator:
         for _, class_reference in clsmembers:
             if class_reference.__module__.split(".")[-1] == module_name:
                 return class_reference
-        return None
+        return "Module not found"
         

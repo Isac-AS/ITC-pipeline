@@ -3,8 +3,6 @@ import logging
 from pipeline_strategies.strategy import Strategy
 
 class WhisperSpeechToTextStrategy(Strategy):
-    name = "Whisper"
-    id = 0
 
     @classmethod
     def execute(cls, path: str) -> str:

@@ -2,8 +2,6 @@ from pipeline_strategies.strategy import Strategy
 import spacy
 
 class SpacyDependencyParsing(Strategy):
-    name = "Spacy"
-    id = 0
     
     @classmethod
     def execute(cls, text: str):
