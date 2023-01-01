@@ -45,17 +45,13 @@ class StrategyNavigator:
         :return: Class reference to the strategy
         :rtype: class
         """
-        try:
-            module_info = [module_info for module_info in pkgutil.iter_modules([f"pipeline/pipeline_strategies/{strategy_type}"]) if module_info.name == module_name][0]
-            spec = module_info.module_finder.find_spec(module_info.name)
-            module = spec.loader.load_module()
-            clsmembers = inspect.getmembers(module, inspect.isclass)
+        module_info = [module_info for module_info in pkgutil.iter_modules([f"pipeline/pipeline_strategies/{strategy_type}"]) if module_info.name == module_name][0]
+        spec = module_info.module_finder.find_spec(module_info.name)
+        module = spec.loader.load_module()
+        clsmembers = inspect.getmembers(module, inspect.isclass)
 
-            #print(f"\nModule_info:\n{module_info}\n\nModule:\n{module}\n\nClsMembers:\n{clsmembers}")
-            for _, class_reference in clsmembers:
-                if class_reference.__module__.split(".")[-1] == module_name:
-                    return class_reference
-        except Exception as e:
-            print(f"[Error]: {e}")
-            return e
-        
+        #print(f"\nModule_info:\n{module_info}\nModule:\n{module}\nClsMembers:\n{clsmembers}")
+        for _, class_reference in clsmembers:
+            if class_reference.__module__.split(".")[-1] == module_name:
+                return class_reference
+       

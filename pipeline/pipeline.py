@@ -9,7 +9,7 @@ class Pipeline:
         self.context = Context()
     
     def run_5_step_pipeline(self, output_path: str, verbose: bool, write_all_steps: bool):
-        transcription: str = self.context.execute_speech_to_text_strategy(output_path)
+        transcription: str = self.context.execute_speech_to_text_strategy(f"{output_path}\\recording.wav")
         spell_checked_transcription: str = self.context.execute_spell_check_strategy(transcription)
         dependency_parsing = self.context.execute_dependency_parsing_strategy(spell_checked_transcription)
         named_entity_recognition = self.context.execute_named_entity_recognition_strategy(spell_checked_transcription)
@@ -32,7 +32,7 @@ class Pipeline:
         TextFileHandler.write_to_text_file(output_path, "electronic_health_record", ehr_output)
     
     def run_3_step_pipeline(self, output_path: str, verbose: bool):
-        transcription: str = self.context.execute_speech_to_text_strategy(output_path)
+        transcription: str = self.context.execute_speech_to_text_strategy(f"{output_path}/recording.wav")
         spell_checked_transcription: str = self.context.execute_spell_check_strategy(transcription)
         ehr_output = self.context.execute_large_electronic_health_record_builder_strategy(spell_checked_transcription)
 

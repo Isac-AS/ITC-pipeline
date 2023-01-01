@@ -17,7 +17,7 @@ class WhisperSpeechToTextStrategy(Strategy):
         try:
             logging.info("Starting transcription...")
             model = whisper.load_model("medium")
-            result = model.transcribe(f"{path}/recording.wav")
+            result = model.transcribe(path)
             logging.info("Finished transcribing.")
             return result["text"]
             
