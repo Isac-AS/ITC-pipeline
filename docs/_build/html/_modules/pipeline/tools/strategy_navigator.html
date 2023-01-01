@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pipeline.tools.strategy_navigator &mdash; itc-pipeline 0.17 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> itc-pipeline
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">pipeline-implementation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">itc-pipeline</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pipeline.tools.strategy_navigator</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pipeline.tools.strategy_navigator</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">pkgutil</span>
+<span class="kn">import</span> <span class="nn">inspect</span>
+
+<div class="viewcode-block" id="StrategyNavigator"><a class="viewcode-back" href="../../../pipeline.tools.html#pipeline.tools.strategy_navigator.StrategyNavigator">[docs]</a><span class="k">class</span> <span class="nc">StrategyNavigator</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Auxiliary tool to list and retrieve strategy class references.</span>
+<span class="sd">    This tool will be used to update the context reference to one strategy.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+<div class="viewcode-block" id="StrategyNavigator.list_strategies"><a class="viewcode-back" href="../../../pipeline.tools.html#pipeline.tools.strategy_navigator.StrategyNavigator.list_strategies">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">list_strategies</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lists the different strategy types that constitute the pipeline.</span>
+
+<span class="sd">        :return: List containing the package names of the different strategies used</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">strategies</span> <span class="o">=</span> <span class="p">[</span><span class="n">module_info</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">module_info</span> <span class="ow">in</span> <span class="n">pkgutil</span><span class="o">.</span><span class="n">iter_modules</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;pipeline/pipeline_strategies&quot;</span><span class="p">])</span> <span class="k">if</span> <span class="n">module_info</span><span class="o">.</span><span class="n">ispkg</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">strategies</span></div>
+
+<div class="viewcode-block" id="StrategyNavigator.list_concrete_strategies"><a class="viewcode-back" href="../../../pipeline.tools.html#pipeline.tools.strategy_navigator.StrategyNavigator.list_concrete_strategies">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">list_concrete_strategies</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">strategy_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        List the implemented strategies within a strategy type. </span>
+<span class="sd">        For example, can list the implemented spell checking strategies.</span>
+
+<span class="sd">        :param strategy_type: Desired strategy type to expand</span>
+<span class="sd">        :type strategy_type: str</span>
+<span class="sd">        :return: List containing the module names of the implemented strategies</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">concrete_strategies</span> <span class="o">=</span> <span class="p">[</span><span class="n">module_info</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">module_info</span> <span class="ow">in</span> <span class="n">pkgutil</span><span class="o">.</span><span class="n">iter_modules</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;pipeline/pipeline_strategies/</span><span class="si">{</span><span class="n">strategy_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">])]</span>
+        <span class="k">return</span> <span class="n">concrete_strategies</span></div>
+
+<div class="viewcode-block" id="StrategyNavigator.get_concrete_strategy_class"><a class="viewcode-back" href="../../../pipeline.tools.html#pipeline.tools.strategy_navigator.StrategyNavigator.get_concrete_strategy_class">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_concrete_strategy_class</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">strategy_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">module_name</span><span class="p">:</span><span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fetches a reference to a concrete strategy.</span>
+<span class="sd">        As the strategies&#39; execute method is a classmethod, it can be called directly from the reference.</span>
+
+<span class="sd">        :param strategy_type: Desired strategy type</span>
+<span class="sd">        :type strategy_type: str</span>
+<span class="sd">        :param module_name: Concrete module within the strategy type</span>
+<span class="sd">        :type module_name: str</span>
+<span class="sd">        :return: Class reference to the strategy</span>
+<span class="sd">        :rtype: class</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">module_info</span> <span class="o">=</span> <span class="p">[</span><span class="n">module_info</span> <span class="k">for</span> <span class="n">module_info</span> <span class="ow">in</span> <span class="n">pkgutil</span><span class="o">.</span><span class="n">iter_modules</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;pipeline/pipeline_strategies/</span><span class="si">{</span><span class="n">strategy_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">])</span> <span class="k">if</span> <span class="n">module_info</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">module_name</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">spec</span> <span class="o">=</span> <span class="n">module_info</span><span class="o">.</span><span class="n">module_finder</span><span class="o">.</span><span class="n">find_spec</span><span class="p">(</span><span class="n">module_info</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">module</span> <span class="o">=</span> <span class="n">spec</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">load_module</span><span class="p">()</span>
+        <span class="n">clsmembers</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmembers</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">)</span>
+
+        <span class="c1">#print(f&quot;\nModule_info:\n{module_info}\nModule:\n{module}\nClsMembers:\n{clsmembers}&quot;)</span>
+        <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">class_reference</span> <span class="ow">in</span> <span class="n">clsmembers</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">class_reference</span><span class="o">.</span><span class="vm">__module__</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">module_name</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">class_reference</span></div></div>
+       
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Isac.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
