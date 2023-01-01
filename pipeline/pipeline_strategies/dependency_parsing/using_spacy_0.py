@@ -1,4 +1,4 @@
-from pipeline_strategies.strategy import Strategy
+from pipeline.pipeline_strategies.strategy import Strategy
 import spacy
 
 class SpacyDependencyParsing(Strategy):

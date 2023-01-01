@@ -1,5 +1,5 @@
 from transformers import pipeline
-from pipeline_strategies.strategy import Strategy
+from pipeline.pipeline_strategies.strategy import Strategy
 
 class ClinicalAndGenericNER(Strategy):
 

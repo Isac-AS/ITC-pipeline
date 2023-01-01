@@ -1,5 +1,5 @@
-from pipeline_strategies.strategy import Strategy
-from tools.strategy_navigator import StrategyNavigator
+from pipeline.pipeline_strategies.strategy import Strategy
+from pipeline.tools.strategy_navigator import StrategyNavigator
 
 class Context:
     """

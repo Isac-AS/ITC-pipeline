@@ -1,6 +1,6 @@
 import whisper
 import logging
-from pipeline_strategies.strategy import Strategy
+from pipeline.pipeline_strategies.strategy import Strategy
 
 class WhisperSpeechToTextStrategy(Strategy):
 

@@ -2,7 +2,7 @@ import time
 #import spacy
 from hl7apy.core import Message
 from transformers import pipeline
-from pipeline_strategies.strategy import Strategy
+from pipeline.pipeline_strategies.strategy import Strategy
 
 class DefaultADT_A01(Strategy):
     """
@@ -62,7 +62,10 @@ class DefaultADT_A01(Strategy):
         # Flintstonesque name extraction
         surnames = None
         # Assuming the is only the patients name and no nk1 sequence
-        full_name = names[0].split()
+        if len(names) > 0:
+            full_name = names[0].split()
+        else:
+            full_name = "None"
         if len(full_name) > 0: 
             surnames = " ".join(full_name[1:])
         if surnames is not None:

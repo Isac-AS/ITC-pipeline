@@ -1,5 +1,5 @@
-from context import Context
-from tools.text_file_handler import TextFileHandler
+from pipeline.context import Context
+from pipeline.tools.text_file_handler import TextFileHandler
 
 class Pipeline:
 

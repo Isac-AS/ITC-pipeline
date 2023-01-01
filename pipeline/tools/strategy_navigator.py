@@ -15,7 +15,7 @@ class StrategyNavigator:
         :return: List containing the package names of the different strategies used
         :rtype: list
         """
-        strategies = [module_info.name for module_info in pkgutil.iter_modules([f"pipeline_strategies"]) if module_info.ispkg]
+        strategies = [module_info.name for module_info in pkgutil.iter_modules([f"pipeline/pipeline_strategies"]) if module_info.ispkg]
         return strategies
 
     @classmethod
@@ -29,7 +29,7 @@ class StrategyNavigator:
         :return: List containing the module names of the implemented strategies
         :rtype: list
         """
-        concrete_strategies = [module_info.name for module_info in pkgutil.iter_modules([f"pipeline_strategies/{strategy_type}"])]
+        concrete_strategies = [module_info.name for module_info in pkgutil.iter_modules([f"pipeline/pipeline_strategies/{strategy_type}"])]
         return concrete_strategies
 
     @classmethod
@@ -45,12 +45,17 @@ class StrategyNavigator:
         :return: Class reference to the strategy
         :rtype: class
         """
-        module_info = [module_info for module_info in pkgutil.iter_modules([f"pipeline_strategies/{strategy_type}"]) if module_info.name == module_name][0]
-        spec = module_info.module_finder.find_spec(module_info.name)
-        module = spec.loader.load_module()
-        clsmembers = inspect.getmembers(module, inspect.isclass)
-        for _, class_reference in clsmembers:
-            if class_reference.__module__.split(".")[-1] == module_name:
-                return class_reference
-        return "Module not found"
+        try:
+            module_info = [module_info for module_info in pkgutil.iter_modules([f"pipeline/pipeline_strategies/{strategy_type}"]) if module_info.name == module_name][0]
+            spec = module_info.module_finder.find_spec(module_info.name)
+            module = spec.loader.load_module()
+            clsmembers = inspect.getmembers(module, inspect.isclass)
+
+            #print(f"\nModule_info:\n{module_info}\n\nModule:\n{module}\n\nClsMembers:\n{clsmembers}")
+            for _, class_reference in clsmembers:
+                if class_reference.__module__.split(".")[-1] == module_name:
+                    return class_reference
+        except Exception as e:
+            print(f"[Error]: {e}")
+            return e
         
